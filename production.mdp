@@ -1,0 +1,49 @@
+; Methane under Titan conditions - Production for Density of States
+integrator      = md
+dt              = 0.0001      ; 0.01 fs (small for high frequencies)
+nsteps          = 50000000    ; 2000 ps (2 ns total)
+nstxout         = 0           ; Don't save coordinates 
+nstvout         = 1          ; Save velocities every 0.001 ps
+nstenergy       = 1000        ; Save energies every 0.1 ps
+nstlog          = 1000       ; Update log file every 1 ps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 20          ; Increase for smaller timestep
+rlist           = 0.67
+rcoulomb        = 0.67
+rvdw            = 0.67
+
+; Electrostatics
+coulombtype     = PME
+pme_order       = 4
+fourierspacing  = 0.16
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1
+ref_t           = 94          ; Titan temperature (K)
+
+; Pressure coupling
+pcoupl          = C-rescale
+pcoupltype      = isotropic
+tau_p           = 5.0
+ref_p           = 1.45        ; Titan surface pressure (bar)
+compressibility = 4.5e-5
+
+; Bonds
+constraints     = none
+constraint_algorithm = lincs
+lincs_iter      = 1
+lincs_order     = 4
+
+; Dispersion correction
+DispCorr        = EnerPres
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Velocity generation
+gen_vel         = no          ; Continue from NPT equilibration
