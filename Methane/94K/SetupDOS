@@ -17,16 +17,23 @@ Create a working directory and place all your files there:
   
 ## Step 1:
 # Create larger box with proper dimensions
-gmx editconf -f methane.pdb -o box.gro -box 2.4 2.4 2.4
+gmx editconf -f methane.pdb -o methane_box.gro -box 4.0 4.0 4.0
 
-# Add CH4 molecules with more insertion attempts
-gmx insert-molecules -f box.gro -ci methane.pdb -nmol 49 -o methane.gro
+# Add NH3 molecules with more insertion attempts
+gmx insert-molecules -f methane_box.gro -ci methane.pdb -nmol 299 -o methane.gro
 
+
+# Define final simulation box
+gmx editconf -f methane.gro -o methaneBox.gro -c
+
+
+# 2. Generate topology for full system
+gmx grompp -f em.mdp -c methaneBox.gro -p topol.top -o em.tpr
 #____________________________  STEP 2  ________________________________#
 
 ## Step 2: Energy minimization
 # Create the run input file
-gmx grompp -f em.mdp -c methane.gro -p topol.top -o em.tpr
+gmx grompp -f em.mdp -c methaneBox.gro -p topol.top -o em.tpr
 
 # Run the minimization
 gmx mdrun -v -deffnm em
@@ -77,19 +84,17 @@ xmgrace density.xvg
 #____________________________  STEP 5  ________________________________#
 ## Step 5: Production run
 # Create the production run input file
-gmx grompp -f production.mdp -c npt.gro -p topol.top -o mdp.tpr
+gmx grompp -f production.mdp -c npt.gro -p topol.top -o production.tpr
 
 # Run the production simulation
-gmx mdrun -v -deffnm md
+gmx mdrun -v -deffnm production
 
 #____________________________  STEP 6  ________________________________#
 #Create index file
-#gmx make_ndx -f methaneBox.gro -o index.ndx
+gmx make_ndx -f methaneBox.gro -o index.ndx
 
-# Preferably use:
+# If needed use:
 python3 methane_bonds.py
-
-#This generates indices of atoms and bonds automatically
 __________________________________________________________________
 # Velocity autocorrelation function calculation (VAFC)
 gmx velacc -f md.trr -s md.tpr -n methane_bonds.ndx -o vacf_system.xvg
@@ -111,7 +116,7 @@ gmx velacc -f md.trr -s md.tpr -o vacf_CH3.xvg
 gmx velacc -f md.trr -s md.tpr -o vacf_CH4.xvg
 ____________________________________________________________________
 # Fourier transform of VAFC to get DOS -> Run python script to fourier transform data in to DOS
-python3 methaneDOS.py  -OR- python3 DOS.py
+python3 methaneDOS.py
 
 
 #Plot output in cm^-1, eV, neutron wavelength

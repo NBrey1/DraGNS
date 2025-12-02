@@ -190,7 +190,7 @@ print("\nCreating individual DOS plots...")
 for group in all_freq.keys():
     plt.figure(figsize=(10, 6))
     plt.plot(all_freq[group], all_dos[group], linewidth=1.5)
-    plt.xlim(0, 8000)  
+    plt.xlim(0, 4000)  
     plt.xlabel('Frequency (cm$^{-1}$)')
     plt.ylabel('DOS (modes per cm⁻¹)')
     plt.title(f'Vibrational Density of States - {groups[group]}')
@@ -238,7 +238,7 @@ if atom_groups:
                         color=colors[i % len(colors)], linestyle=linestyles[i], 
                         linewidth=linewidths[i])
     
-    plt.xlim(0, 8000)
+    plt.xlim(0, 4000)
     plt.xlabel('Frequency (cm$^{-1}$)')
     plt.ylabel('DOS (scaled for comparison)')
     plt.title('Total System vs Individual Atoms - Vibrational Density of States')
@@ -261,7 +261,7 @@ if bond_groups:
             plt.plot(freq_data, normalized_dos, label=groups[group], 
                     color=colors[i % len(colors)], linewidth=1.5)
     
-    plt.xlim(0, 8000)
+    plt.xlim(0, 4000)
     plt.xlabel('Frequency (cm$^{-1}$)')
     plt.ylabel('Normalized DOS')
     plt.title('Comparison of C-H Bonds - Vibrational Density of States')
@@ -290,7 +290,7 @@ if len(all_freq) > 1:
                 if max_dos > 0:
                     normalized_dos = all_dos[group] / max_dos
                     plt.plot(all_freq[group], normalized_dos, label=group, linewidth=1.5)
-    plt.xlim(0, 8000)
+    plt.xlim(0, 4000)
     plt.xlabel('Frequency (cm$^{-1}$)')
     plt.ylabel('Normalized/Scaled DOS')
     plt.title('System vs Individual Atoms')
@@ -305,7 +305,7 @@ if len(all_freq) > 1:
             if max_dos > 0:
                 normalized_dos = all_dos[group] / max_dos
                 plt.plot(all_freq[group], normalized_dos, label=group, linewidth=1.5)
-    plt.xlim(0, 8000)
+    plt.xlim(0, 4000)
     plt.xlabel('Frequency (cm$^{-1}$)')
     plt.ylabel('Normalized DOS')
     plt.title('C-H Bonds')
@@ -336,7 +336,7 @@ if len(all_freq) > 1:
             plt.plot(all_freq[h_groups[0]], avg_h_dos, label='Average Hydrogens', 
                     linewidth=2, color='red')
     
-    plt.xlim(0, 8000)
+    plt.xlim(0, 4000)
     plt.xlabel('Frequency (cm$^{-1}$)')
     plt.ylabel('Normalized DOS')
     plt.title('Carbon vs Average Hydrogens')
