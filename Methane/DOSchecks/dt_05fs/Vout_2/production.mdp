@@ -3,7 +3,7 @@ integrator      = md
 dt              = 0.0005      ; 0.5 fs 
 nsteps          = 10000000    ; 5000 ps (5 ns total)
 nstxout         = 0           ; Don't save coordinates 
-nstvout         = 5           ; Save velocities every 2.5 fs
+nstvout         = 2           ; Save velocities every 2.5 fs
 nstenergy       = 1000        ; Save energies every 0.5 ps
 nstlog          = 1000        ; Update log file every 0.5 ps
 
