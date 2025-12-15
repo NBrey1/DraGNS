@@ -1,0 +1,37 @@
+; Energy Minimization for Methane under Titan conditions (94 K, 1.5 bar)
+
+; Run control
+integrator      = steep         ; Steepest descent
+emtol           = 1.0           ; Stop when max force < 1.0 kJ/mol/nm (strict)
+emstep          = 0.01          ; Initial step size (nm)
+nsteps          = 100000        ; Maximum steps
+nstxout         = 1000          ; Write coordinates every 1000 steps
+nstlog          = 100           ; Write to log every 100 steps
+nstenergy       = 100           ; Write energies every 100 steps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 1
+rlist           = 1.0           ;
+
+; Electrostatics
+coulombtype     = PME
+rcoulomb        = 1.0           ; 
+pme_order       = 4
+fourierspacing  = 0.12          ; Finer grid for better accuracy
+
+; Van der Waals
+vdwtype         = Cut-off
+rvdw            = 1.0           ; 
+vdw-modifier    = Potential-shift-Verlet
+
+; Constraints
+constraints     = none          ; No constraints during minimization
+constraint_algorithm = lincs
+
+; Dispersion correction
+DispCorr        = EnerPres      ; Long-range dispersion correction
+
+; Periodic boundary conditions
+pbc             = xyz           ; 3D periodic boundaries
