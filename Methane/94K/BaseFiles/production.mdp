@@ -1,7 +1,7 @@
 ; Methane under Titan conditions - Production for Density of States
 integrator      = md
 dt              = 0.0001      ; 0.01 fs (small for high frequencies)
-nsteps          = 20000000    ; 2000 ps (2 ns total)
+nsteps          = 10000000    ; 1000 ps (2 ns total)
 nstxout         = 0           ; Don't save coordinates 
 nstvout         = 1          ; Save velocities every 0.001 ps
 nstenergy       = 1000        ; Save energies every 0.1 ps
