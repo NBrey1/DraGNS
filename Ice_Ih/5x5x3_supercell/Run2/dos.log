@@ -1,0 +1,45 @@
+Doing density of states analysis based on trajectory.
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+T. A. Pascal and S. T. Lin and W. A. Goddard III
+Thermodynamics of liquids: standard molar entropies and heat capacities of
+common solvents from 2PT molecular dynamics
+Phys. Chem. Chem. Phys. 13 (2011) pp. 169-181
+-------- -------- --- Thank You --- -------- --------
+
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+C. Caleman and P. J. van Maaren and M. Hong and J. S. Hub and L. T. da Costa
+and D. van der Spoel
+Force Field Benchmark of Organic Liquids: Density, Enthalpy of Vaporization,
+Heat Capacities, Surface Tension, Isothermal Compressibility, Volumetric
+Expansion Coefficient, and Dielectric Constant
+J. Chem. Theo. Comp. 8 (2012) pp. 61
+-------- -------- --- Thank You --- -------- --------
+
+System = "Ice Ih 3x3x2 Supercell - TIP4P/Ice"
+Nmol = 300
+Natom = 1200
+dt = 0.0004 ps
+tmass = 5404.62 amu
+V = 9.34825 nm^3
+rho = 960.028 g/l
+T = 298.15 K
+beta = 0.403395 mol/kJ
+
+DoS parameters
+Delta = 0.00157906
+fluidicity = 0.0188169
+hard sphere packing fraction = 41.1362
+hard sphere compressibility = 1.0498
+ideal gas entropy = 0.0515601
+hard sphere entropy = -0.117484
+sigma_HS = 0.849034 nm
+DoS0 = 0.835073
+Dos2 = 1.39142e+14
+DoSTot = 1702.61
+Diffusion coefficient from VACF 0.00523877 10^-5 cm^2/s
+Diffusion coefficient from DoS 0.0319188 10^-5 cm^2/s
+Heat capacity -nan J/mol K
+
+Arrivederci!
