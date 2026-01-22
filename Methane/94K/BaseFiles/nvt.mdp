@@ -1,0 +1,55 @@
+; nvt_cooling.mdp - NVT with gradual cooling for methane formation
+; Cool from 150K to 94K to allow crystallization
+
+; Run parameters
+integrator              = md            ; Leap-frog integrator
+nsteps                  = 5000000       ; 5 ns total cooling time
+dt                      = 0.001         ; 1 fs time step
+nstxout                 = 1000          ; Save coordinates every 1 ps
+nstvout                 = 1000          ; Save velocities every 1 ps
+nstenergy               = 500           ; Save energies every 0.5 ps
+nstlog                  = 500           ; Update log file every 0.5 ps
+
+; Neighbor searching
+cutoff-scheme           = Verlet
+nstlist                 = 10            ; Update neighbor list every 10 steps
+pbc                     = xyz           ; Periodic Boundary Conditions in all directions
+rlist                   = 0.85          ; Cut-off distance for the short-range neighbor list
+
+; Electrostatics
+coulombtype             = PME           ; Treatment of long range electrostatic interactions
+rcoulomb                = 0.85           ; Short-range electrostatic cut-off
+fourierspacing          = 0.16          ; Grid spacing for FFT
+pme_order               = 4             ; Interpolation order for PME
+ewald_rtol              = 1e-5          ; Relative strength of the Ewald-shifted direct potential
+
+; Van der Waals
+vdwtype                 = Cut-off       ; Twin range cut-offs with neighbor list cut-off
+rvdw                    = 0.85           ; Short-range Van der Waals cut-off
+DispCorr                = EnerPres      ; Apply long range dispersion corrections
+
+; Temperature coupling with annealing
+tcoupl                  = V-rescale     ; Modified Berendsen thermostat
+tc-grps                 = System        ; Single temperature coupling group
+tau_t                   = 0.1           ; Time constant for temperature coupling
+ref_t                   = 150           ; Starting reference temperature (required)
+
+; Simulated annealing - gradual cooling
+annealing               = single        ; Apply annealing to single group
+annealing-npoints       = 6             ; Number of temperature points
+annealing-time          = 0 1000 2000 3000 4000 5000  ; Time points (ps)
+annealing-temp          = 150 135 120 105 97 94       ; Temperature at each point (K)
+
+; Pressure coupling (none for NVT)
+pcoupl                  = no            ; No pressure coupling in NVT
+
+; Velocity generation
+gen_vel                 = yes           ; Assign velocities from Maxwell distribution
+gen_temp                = 150           ; Start at high temperature (K)
+gen_seed                = -1            ; Generate a random seed
+
+; Bonds
+constraints             = none          ; Constrain all bonds involving H-atoms
+constraint_algorithm    = LINCS         ; Linear Constraint Solver
+lincs_iter              = 1             ; Number of iterations
+lincs_order             = 4             ; Highest order in expansion
