@@ -1,0 +1,46 @@
+; Methane under Titan conditions - NPT Equilibration
+integrator      = md
+dt              = 0.001      ; 1 fs
+nsteps          = 4000000     ; 4 ns
+nstxout         = 1000       ; Save coordinates every 5 ps
+nstvout         = 100        ; Save velocities every 5 ps
+nstenergy       = 1000       ; Save energies every 1 ps
+nstlog          = 1000       ; Update log file every 1 ps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 0.85
+rcoulomb        = 0.85
+rvdw            = 0.85
+
+; Electrostatics
+coulombtype     = PME
+pme_order       = 4
+fourierspacing  = 0.16
+
+; Temperature coupling
+tcoupl          = V-rescale  ; Modified Berendsen thermostat
+tc-grps         = System     ; Single temperature group
+tau_t           = 0.1        ; Time constant for coupling
+ref_t           = 94         ; Titan temperature (K)
+
+; Pressure coupling
+pcoupl          = C-rescale   ; For production-quality equilibration
+pcoupltype      = isotropic           ; Isotropic scaling
+tau_p           = 30.0                 ; Time constant for coupling
+ref_p           = 1.5                ; Titan surface pressure (bar)
+compressibility = 5.0e-4              ; 1/bar
+
+; Bonds
+constraints     = none          ; Constrain H bonds
+constraint_algorithm = lincs
+lincs_iter      = 1
+lincs_order     = 4
+
+; Dispersion correction
+DispCorr        = EnerPres            ; Account for cut-off vdW scheme
+
+; Periodic boundary conditions
+pbc             = xyz
