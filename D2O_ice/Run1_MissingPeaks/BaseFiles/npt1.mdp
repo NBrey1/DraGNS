@@ -1,0 +1,56 @@
+; Ice Ih under Titan conditions - NPT Equilibration
+; TIP4P/Ice water model
+
+; Run parameters
+integrator      = md
+dt              = 0.001      ; 1 fs
+nsteps          = 1000000     ; 500 ps
+
+; Output control
+nstxout         = 5000       ; Save coordinates every 5 ps
+nstvout         = 5000       ; Save velocities every 5 ps
+nstenergy       = 500        ; Save energies every 0.5 ps
+nstlog          = 1000       ; Update log every 1 ps
+nstxout-compressed = 1000    ; Compressed trajectory every 1 ps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 1.0
+
+; Electrostatics
+coulombtype     = PME
+rcoulomb        = 1.0
+pme_order       = 4
+fourierspacing  = 0.12       
+
+; Van der Waals
+rvdw            = 1.0
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = EnerPres
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1                   ; Fast coupling for equilibration
+ref_t           = 94                    ; Titan temperature
+
+; Pressure coupling 
+pcoupl          = Berendsen             ; Gentle for equilibration
+pcoupltype      = isotropic              
+tau_p           = 10.0                    
+ref_p           = 1.5                   ; Titan surface pressure (bar)
+compressibility = 1.0e-5                ; Ice Ih compressibility (1/bar)
+
+; Velocity generation
+gen_vel         = no                    ; Continue from NVT
+
+; Constraints
+constraints     = none            ; Constrain bonds for stability
+constraint_algorithm = lincs
+lincs_iter      = 1
+lincs_order     = 4
+
+; Periodic boundary conditions
+pbc             = xyz
