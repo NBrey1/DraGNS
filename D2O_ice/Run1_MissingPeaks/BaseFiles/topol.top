@@ -1,0 +1,50 @@
+; Flexible D2O Ice Topology for Density of States Calculations
+;
+; References for force field parameters:
+; - Bond/angle parameters approximated from SPC flexible water model
+; - Masses: NIST standard atomic weights (D = 2.014 amu)
+; - Charges: Standard SPC/E model
+
+[ defaults ]
+; nbfunc   comb-rule   gen-pairs   fudgeLJ fudgeQQ
+1          2           no          1.0     1.0
+
+[atomtypes]
+;name    mass      charge   ptype   sigma        epsilon
+OW_f   15.99940    0.000      A    0.316557     0.650194
+DW_f    2.01410    0.000      A    0.00000      0.00000
+
+[moleculetype]
+; name nrexcl
+D2O_flex  2
+
+[atoms]
+; nr  type   resnr residue atom  cgnr  charge     mass
+1     OW_f   1     ICE     OW    1    -0.8476   15.9994
+2     DW_f   1     ICE     DW1   1     0.4238    2.0141
+3     DW_f   1     ICE     DW2   1     0.4238    2.0141
+
+[ bonds ]
+; i  j  funct  length(nm)  force_constant(kJ/mol/nm²)
+; O-D bonds - harmonic potential
+; Parameters approximated from flexible water models
+1   2   1      0.1000      345000.0    ; O-D1 bond
+1   3   1      0.1000      345000.0    ; O-D2 bond
+
+[ angles ]
+; i  j  k  funct  angle(deg)  force_constant(kJ/mol/rad²)
+; D-O-D bending
+; Parameters approximated from flexible water models
+2   1   3   1     109.47      383.0       ; D-O-D angle
+
+[exclusions]
+; Exclude all non-bonded interactions within molecule
+1   2   3
+2   1   3
+3   1   2
+
+[system]
+Flexible D2O Ice for DoS Calculations at Titan Conditions
+
+[molecules]
+D2O_flex  432
