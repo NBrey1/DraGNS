@@ -1,0 +1,59 @@
+&GLOBAL
+      PROJECT Titan_Ice_MD
+      RUN_TYPE MD
+      PRINT_LEVEL LOW
+    &END GLOBAL
+
+    &FORCE_EVAL
+      METHOD Quickstep
+      &DFT
+        &QS
+          METHOD PM6
+          EPS_DEFAULT 1.0E-10
+        &END QS
+        &SCF
+          MAX_SCF 50
+          EPS_SCF 1.0E-4              ! Relaxed tolerance for speed
+          IGNORE_CONVERGENCE_FAILURE .TRUE.
+          &OT
+            MINIMIZER DIIS
+            PRECONDITIONER FULL_SINGLE_INVERSE
+          &END OT
+        &END SCF
+      &END DFT
+
+      &SUBSYS
+        &CELL
+          ABC 9.036 9.036 14.712
+          ALPHA_BETA_GAMMA 90 90 120
+          PERIODIC XYZ
+        &END CELL
+        &TOPOLOGY
+          COORD_FILE_NAME ice_relaxed.xyz
+          COORD_FILE_FORMAT XYZ
+        &END TOPOLOGY
+      &END SUBSYS
+    &END FORCE_EVAL
+
+    &MOTION
+      &MD
+        ENSEMBLE NVT
+        STEPS 1000                  ! <--- UPDATED: 1000 Steps for smooth spectrum
+        TIMESTEP 0.5                ! 0.5 fs
+        TEMPERATURE 94.0            ! Titan Surface Temperature
+        &THERMOSTAT
+          TYPE CSVR
+          &CSVR
+            TIMECON 100.0
+          &END CSVR
+        &END THERMOSTAT
+      &END MD
+      &PRINT
+        &TRAJECTORY
+          &EACH
+            MD 2                    ! <--- UPDATED: Save every 2 steps for resolution
+          &END EACH
+        &END TRAJECTORY
+      &END PRINT
+    &END MOTION
+    
