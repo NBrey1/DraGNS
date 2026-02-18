@@ -1,0 +1,50 @@
+; Ice-D2O under Titan conditions - Production for Density of States
+integrator      = md
+dt              = 0.0005      ; 0.5 fs 
+nsteps          = 40000       ; 20 ps 
+
+; Output control
+nstxout                  = 0         ; Don't save coordinates
+nstvout                  = 1         ; Save velocities every step (CRITICAL for DoS)
+nstfout                  = 0         ; Don't save forces
+nstenergy                = 1000      ; Save energies every 0.5 ps
+nstlog                   = 1000      ; Update log file every 0.5 ps
+nstxout-compressed       = 0         
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+nstlist         = 20          
+rlist           = 1.05
+
+; Electrostatics
+coulombtype     = PME
+rcoulomb        = 1.05
+pme_order       = 4
+fourierspacing  = 0.12
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1
+ref_t           = 94          ; Titan temperature (K)
+
+; Van der Waals
+vdwtype         = Cut-off
+rvdw            = 1.05
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = EnerPres
+
+; Bonds
+constraints     = none
+constraint_algorithm = lincs
+lincs_iter      = 1
+lincs_order     = 4
+
+; constant volume
+pcoupl          = no
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Velocity generation
+gen_vel         = no          ; Continue from NPT equilibration
