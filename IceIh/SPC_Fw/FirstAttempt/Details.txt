@@ -1,0 +1,11 @@
+First run with SPC/Fw ice-Ih:
+632 molecules
+
+Parameter:	Value: 			GROMACS units
+k_bond		1059.162 kcal/mol/A2	4431.53 kJ/mol/nm2
+r0		1.012 A			0.10120 nm
+k_angle		75.90 kcal/mol/rad2	317.57 kJ/mol/rad2
+Theta0		113.24			For Ice-Ih used 109.47
+
+See base files for coordinate, topol, and .mdp files
+See general files for results up to the production run
