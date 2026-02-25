@@ -1,0 +1,55 @@
+; H2O Ice Ih Topology - SPC/Fw flexible model
+;
+; ============================================================
+; PRIMARY REFERENCE:
+;   Wu, Tepper & Voth, J. Chem. Phys. 124, 024503 (2006)
+;   DOI: 10.1063/1.2136877
+;
+; UNIT CONVERSIONS from Wu et al. (2006) Table I:
+;   k_bond:  1059.162 kcal/mol/Å² * 4.184 * 100 = 443153.4 kJ/mol/nm²
+;   k_angle: 75.90 kcal/mol/rad²  * 4.184        = 317.57 kJ/mol/rad²
+;   sigma_O: 3.165492 Å = 0.3165492 nm
+;   eps_O:   0.1554253 kcal/mol * 4.184 = 0.6503 kJ/mol
+; ============================================================
+
+[ defaults ]
+; nbfunc   comb-rule   gen-pairs   fudgeLJ   fudgeQQ
+  1        2           no          1.0       1.0
+
+[ atomtypes ]
+; name      at.num   mass        charge   ptype   sigma        epsilon
+OW_spcfw    8        15.9994     0.0000   A       0.3165492    0.6503
+HW_spcfw    1        1.0080      0.0000   A       0.0000000    0.0000
+
+[ moleculetype ]
+; molname   nrexcl
+H2O         2
+
+[ atoms ]
+; nr   type        resnr   residu   atom   cgnr   charge    mass
+  1    OW_spcfw    1       ICE      OW     1      -0.82     15.9994
+  2    HW_spcfw    1       ICE      HW1    1       0.41      1.0080
+  3    HW_spcfw    1       ICE      HW2    1       0.41      1.0080
+
+[ bonds ]
+; i   j   funct   length(nm)   force_constant(kJ/mol/nm²)
+; Source: Wu et al. (2006) Table I, converted from 1059.162 kcal/mol/Å²
+  1   2   1       0.10120      443153.4    ; O-H1
+  1   3   1       0.10120      443153.4    ; O-H2
+
+[ angles ]
+; i   j   k   funct   angle(deg)   force_constant(kJ/mol/rad²)
+; Source: Wu et al. (2006) Table I, converted from 75.90 kcal/mol/rad²
+  2   1   3   1       109.47       317.57    ; H-O-H
+
+[ exclusions ]
+  1   2   3
+  2   1   3
+  3   1   2
+
+[ system ]
+H2O Ice Ih - SPC/Fw flexible model - Titan conditions (T=94K, P=1.5 atm)
+
+[ molecules ]
+; Compound   #mols
+H2O          632
