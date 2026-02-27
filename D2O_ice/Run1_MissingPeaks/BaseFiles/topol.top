@@ -1,9 +1,5 @@
-; Flexible D2O Ice Topology for Density of States Calculations
-;
-; References for force field parameters:
-; - Bond/angle parameters approximated from SPC flexible water model
-; - Masses: NIST standard atomic weights (D = 2.014 amu)
-; - Charges: Standard SPC/E model
+; D2O Ice topology file. Copied from Ice-Ih
+; Change masses of H --> D
 
 [ defaults ]
 ; nbfunc   comb-rule   gen-pairs   fudgeLJ fudgeQQ
