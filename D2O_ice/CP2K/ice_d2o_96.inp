@@ -1,5 +1,5 @@
 &GLOBAL
-      PROJECT Titan_Ice_D2O_96
+      PROJECT Titan_Ice_D2O_Quantum
       RUN_TYPE MD
       PRINT_LEVEL LOW
     &END GLOBAL
@@ -12,8 +12,8 @@
           EPS_DEFAULT 1.0E-10
         &END QS
         &SCF
-          MAX_SCF 50                  
-          EPS_SCF 1.0E-4
+          MAX_SCF 40                  
+          EPS_SCF 1.0E-5  ! Optimized for faster step calculation
           IGNORE_CONVERGENCE_FAILURE .TRUE.
           &OT
             MINIMIZER DIIS
@@ -35,31 +35,29 @@
 
         &KIND H
           ELEMENT H
-          MASS 2.014102   ! Mass of Deuterium
+          MASS 2.014102   ! Heavy water
         &END KIND
-
       &END SUBSYS
     &END FORCE_EVAL
 
     &MOTION
       &MD
-        ENSEMBLE NVT
-        STEPS 1000
-        TIMESTEP 0.5
+        ENSEMBLE NVE  
+        STEPS 1000    ! 1000 steps at 1.0 fs = 1 picosecond total
+        TIMESTEP 1.0  
         TEMPERATURE 94.0
-        &THERMOSTAT
-          TYPE CSVR
-          &CSVR
-            TIMECON 100.0
-          &END CSVR
-        &END THERMOSTAT
       &END MD
       &PRINT
         &TRAJECTORY
           &EACH
-            MD 2
+            MD 1  
           &END EACH
         &END TRAJECTORY
+        &VELOCITIES   
+          &EACH
+            MD 1
+          &END EACH
+        &END VELOCITIES
       &END PRINT
     &END MOTION
     

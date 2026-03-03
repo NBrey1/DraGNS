@@ -3,8 +3,8 @@
 
 ; Run parameters
 integrator      = md
-dt              = 0.0005      ; 0.5 fs
-nsteps          = 1000000     ; 500 ps
+dt              = 0.001       ; 1 fs
+nsteps          = 2000000     ; 500 ps
 
 ; Output control
 nstxout         = 5000       ; Save coordinates every 5 ps
@@ -39,7 +39,7 @@ ref_t           = 94                    ; Titan temperature
 ; Pressure coupling 
 pcoupl          = Berendsen             ; Gentle for equilibration
 pcoupltype      = isotropic              
-tau_p           = 10.0                    
+tau_p           = 5                    
 ref_p           = 1.5                   ; Titan surface pressure (bar)
 compressibility = 1.0e-5                ; Ice Ih compressibility (1/bar)
 
