@@ -17,16 +17,16 @@ nstxout-compressed = 1000    ; Compressed trajectory every 1 ps
 cutoff-scheme   = Verlet
 ns_type         = grid
 nstlist         = 10
-rlist           = 1.0
+rlist           = 0.6
 
 ; Electrostatics
 coulombtype     = PME
-rcoulomb        = 1.0
+rcoulomb        = 0.6
 pme_order       = 4
 fourierspacing  = 0.12       
 
 ; Van der Waals
-rvdw            = 1.0
+rvdw            = 0.6
 vdw-modifier    = Potential-shift-Verlet
 DispCorr        = EnerPres
 

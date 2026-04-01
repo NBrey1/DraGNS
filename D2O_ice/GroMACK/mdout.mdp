@@ -2,7 +2,7 @@
 ;	File 'mdout.mdp' was generated
 ;	By user: mackenziehenley (501)
 ;	On host: MacBook-Air-950.local
-;	At date: Mon Mar  2 22:24:03 2026
+;	At date: Wed Mar 25 17:05:09 2026
 ;
 ;	Created by:
 ;	                :-) GROMACS - gmx grompp, 2025.4-Homebrew (-:
@@ -94,7 +94,7 @@ verlet-buffer-tolerance  = 0.005
 ; Allowed error in the average pressure due to the Verlet buffer for LJ interactions
 verlet-buffer-pressure-tolerance = 0.5
 ; nblist cut-off        
-rlist                    = 1.05
+rlist                    = 0.6
 ; long-range cut-off for switched potentials
 
 ; OPTIONS FOR ELECTROSTATICS AND VDW
@@ -102,7 +102,7 @@ rlist                    = 1.05
 coulombtype              = PME
 coulomb-modifier         = Potential-shift-Verlet
 rcoulomb-switch          = 0
-rcoulomb                 = 1.05
+rcoulomb                 = 0.6
 ; Relative dielectric constant for the medium and the reaction field
 epsilon-r                = 1
 epsilon-rf               = 0
@@ -111,7 +111,7 @@ vdwtype                  = Cut-off
 vdw-modifier             = Potential-shift-Verlet
 ; cut-off lengths       
 rvdw-switch              = 0
-rvdw                     = 1.05
+rvdw                     = 0.6
 ; Apply long range dispersion corrections for Energy and Pressure
 DispCorr                 = EnerPres
 ; Extension of the potential lookup tables beyond the cut-off
@@ -175,7 +175,7 @@ annealing-temp           =
 ; GENERATE VELOCITIES FOR STARTUP RUN
 gen_vel                  = no
 gen-temp                 = 300
-gen-seed                 = -25298948
+gen-seed                 = -581353609
 
 ; OPTIONS FOR BONDS    
 constraints              = none

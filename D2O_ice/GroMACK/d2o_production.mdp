@@ -14,11 +14,11 @@ nstxout-compressed       = 0
 ; Neighbor searching
 cutoff-scheme   = Verlet
 nstlist         = 20          
-rlist           = 1.05
+rlist           = 0.6
 
 ; Electrostatics
 coulombtype     = PME
-rcoulomb        = 1.05
+rcoulomb        = 0.6
 pme_order       = 4
 fourierspacing  = 0.12
 
@@ -30,7 +30,7 @@ ref_t           = 94          ; Titan temperature (K)
 
 ; Van der Waals
 vdwtype         = Cut-off
-rvdw            = 1.05
+rvdw            = 0.6
 vdw-modifier    = Potential-shift-Verlet
 DispCorr        = EnerPres
 
