@@ -1,0 +1,45 @@
+# This file was created Tue Apr 14 12:54:45 2026
+# Created by:
+#                 :-) GROMACS - gmx energy, 2025.4-Homebrew (-:
+# 
+# Executable:   /opt/homebrew/bin/../Cellar/gromacs/2025.4/bin/gmx
+# Data prefix:  /opt/homebrew/bin/../Cellar/gromacs/2025.4
+# Working dir:  /Users/mackenziehenley/cp2k/D2O_ice/GroMACK Run2/d2o_ice_vdos
+# Command line:
+#   gmx energy -f em.edr -o em_potential.xvg
+# gmx energy is part of G R O M A C S:
+#
+# Gravel Rubs Often Many Awfully Cauterized Sores
+#
+@    title "GROMACS Energies"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "(kJ/mol)"
+@TYPE xy
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "Potential"
+    0.000000  -19962.833984
+    1.000000  -22401.253906
+    2.000000  -24713.859375
+    3.000000  -26588.265625
+    4.000000  -27423.402344
+    5.000000  -27840.255859
+    7.000000  -27915.691406
+    9.000000  -27961.386719
+   10.000000  -27975.500000
+   11.000000  -27994.994141
+   13.000000  -28009.681641
+   14.000000  -28014.396484
+   15.000000  -28033.255859
+   17.000000  -28039.025391
+   18.000000  -28044.517578
+   19.000000  -28045.361328
+   20.000000  -28052.691406
+   22.000000  -28063.259766
+   23.000000  -28064.056641
+   24.000000  -28071.390625
+   26.000000  -28079.218750
