@@ -1,0 +1,59 @@
+; Methane under Titan conditions - NPT Stage 2
+
+; Run parameters
+integrator      = md
+dt              = 0.001      ; 1 fs
+nsteps          = 1000000    ; 1 ns additional
+
+; Output control
+nstxout         = 5000
+nstvout         = 5000
+nstenergy       = 500
+nstlog          = 1000
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 1.0
+
+; Electrostatics
+coulombtype     = PME
+rcoulomb        = 1.0
+pme_order       = 4
+fourierspacing  = 0.12
+
+; Van der Waals
+vdwtype         = Cut-off
+rvdw            = 1.0
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = EnerPres
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1
+ref_t           = 300
+
+; Pressure coupling
+pcoupl          = C-rescale
+pcoupltype      = isotropic
+tau_p           = 2.0
+ref_p           = 1.0 1.0 1.0 0.0 0.0 0.0
+compressibility = 1.0e-5 1.0e-5 1.0e-5 0.0 0.0 0.0
+
+; Velocity generation
+gen_vel         = no         ; Continue from Stage 1
+
+; Constraints
+constraints     = none
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Center of mass motion removal
+comm-mode       = Linear
+nstcomm         = 100
+
+; Continuation from NVT
+continuation    = yes
