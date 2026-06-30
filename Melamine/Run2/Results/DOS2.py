@@ -10,13 +10,13 @@ import sys
 
 
 # =============================================================
-# STEP 1: Read a GROMACS .xvg file
+# STEP 1: Read the GROMACS .xvg file
 # =============================================================
 def read_xvg(filename):
     """
     Read a GROMACS .xvg file.
     Handles the case where time values are rounded to 3 decimal
-    places, causing apparent duplicate time entries.
+    places, causing apparent duplicate time entries. (example: 0.0005 = 0.001 and 0.001 = 0001) b/c dt = 0.0005 for Run 2 in Melamine
     """
     times = []
     values = []
@@ -33,8 +33,8 @@ def read_xvg(filename):
     times = np.array(times)
     values = np.array(values)
     
-    # Compute the CORRECT time step by averaging over all points
-    # This avoids the rounding problem in GROMACS .xvg output
+    # Compute the corrected time step by averaging over all points
+    # This avoids the rounding problem in GROMACS reading the .xvg output with 0.0005 rounding up to 0.001
     dt = (times[-1] - times[0]) / (len(times) - 1)
     
     # Rebuild the time axis with correct spacing
@@ -77,7 +77,7 @@ def vacf_to_dos(times, vacf):
 
 
 # =============================================================
-# STEP 2: Diagnostic — inspect the raw VACF data
+# STEP 2: Diagnostic — check the raw VACF data
 # =============================================================
 def diagnose_vacf(filename):
     """
@@ -112,7 +112,7 @@ def diagnose_vacf(filename):
     ratio = abs(vacf[-1] / vacf[0]) if vacf[0] != 0 else 0
     print(f"  Decay ratio (end/start): {ratio:.4f}")
     if ratio > 0.5:
-        print(f"  WARNING: VACF has not decayed much!")
+        print(f"  WARNING: VACF has not decayed enough")
         print(f"  Consider using a longer correlation time.")
     
     # Maximum resolvable frequency
@@ -138,7 +138,7 @@ def vacf_to_dos(times, vacf):
     Compute the vibrational density of states from the VACF.
     
     The DoS g(w) is the Fourier transform of the VACF:
-        g(w) = integral of <v(0).v(t)> * exp(-iwt) dt
+        g(w) = int of <v(0).v(t)> * exp(-iwt) dt
     
     Steps:
     1. Apply Blackman window to reduce spectral leakage
@@ -156,8 +156,7 @@ def vacf_to_dos(times, vacf):
         vacf_norm = vacf.copy()
     
     # Apply Blackman window
-    # This smoothly tapers the data to zero at both ends,
-    # preventing artifacts from the sharp cutoff
+    # This smoothly tapers the data to zero at both ends, preventing artifacts from the sharp cutoff
     window = np.blackman(len(vacf_norm))
     vacf_windowed = vacf_norm * window
     
@@ -168,7 +167,6 @@ def vacf_to_dos(times, vacf):
     # Power spectrum = |FFT|^2
     # Using just the real part of FFT can also work:
     #   dos = np.real(fft_result)
-    # The power spectrum shows all modes regardless of phase
     dos = np.abs(fft_result)
     
     # Frequency axis
@@ -319,7 +317,7 @@ def main():
     ax.set_xlim(0, freq_max)
     ax.grid(True, alpha=0.3)
     
-    # Annotate key regions
+    # Annotate key regions from Grabska
     regions = [
         (50, 200, 'Lattice\nmodes', 'gray'),
         (600, 900, 'Ring\ndeform.', 'lightblue'),
