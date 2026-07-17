@@ -3,6 +3,10 @@
 *.restart
 *.restart.bak-*
 *.Hessian
+*.ener
+*-pos-1.xyz
+*-vel-1.xyz
+*.out
 3ob-3-1/
 .DS_Store
 .ipynb_checkpoints/
