@@ -1,0 +1,14 @@
+*.wfn
+*.wfn.bak-*
+*.restart
+*.restart.bak-*
+*.Hessian
+3ob-3-1/
+.DS_Store
+.ipynb_checkpoints/
+test.out
+melamine_test.inp
+melamine_nve.inp
+melamine_nvt.inp
+melamine_geo_opt.inp
+melamine_geo_opt-*
