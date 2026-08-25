@@ -1,0 +1,30 @@
+; NVE Production for VDOS - NH3 solid (OPLS-AA)
+integrator  = md
+dt          = 0.0005
+nsteps      = 40000
+
+nstxout     = 0
+nstvout     = 1
+nstfout     = 0
+nstenergy   = 100
+nstlog      = 1000
+nstxout-compressed = 1000
+
+cutoff-scheme = Verlet
+nstlist       = 20
+pbc           = xyz
+
+coulombtype   = PME
+rcoulomb      = 1.0
+
+vdwtype       = Cut-off
+rvdw          = 1.0
+DispCorr      = EnerPres
+
+tcoupl        = no
+pcoupl        = no
+
+constraints   = none
+
+gen-vel       = no
+continuation  = yes
