@@ -1,0 +1,45 @@
+Doing density of states analysis based on trajectory.
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+T. A. Pascal and S. T. Lin and W. A. Goddard III
+Thermodynamics of liquids: standard molar entropies and heat capacities of
+common solvents from 2PT molecular dynamics
+Phys. Chem. Chem. Phys. 13 (2011) pp. 169-181
+-------- -------- --- Thank You --- -------- --------
+
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+C. Caleman and P. J. van Maaren and M. Hong and J. S. Hub and L. T. da Costa
+and D. van der Spoel
+Force Field Benchmark of Organic Liquids: Density, Enthalpy of Vaporization,
+Heat Capacities, Surface Tension, Isothermal Compressibility, Volumetric
+Expansion Coefficient, and Dielectric Constant
+J. Chem. Theo. Comp. 8 (2012) pp. 61
+-------- -------- --- Thank You --- -------- --------
+
+System = "Methane system"
+Nmol = 200
+Natom = 1000
+dt = 0.0025 ps
+tmass = 3208.6 amu
+V = 10.5576 nm^3
+rho = 504.661 g/l
+T = 298.15 K
+beta = 0.403395 mol/kJ
+
+DoS parameters
+Delta = 0.0708676
+fluidicity = 0.156293
+hard sphere packing fraction = 3.2752
+hard sphere compressibility = 1.70923
+ideal gas entropy = 0.036486
+hard sphere entropy = 0.0144653
+sigma_HS = 0.404205 nm
+DoS0 = 29.1717
+Dos2 = 2.24939e+13
+DoSTot = 1890.31
+Diffusion coefficient from VACF 1.57423 10^-5 cm^2/s
+Diffusion coefficient from DoS 1.87817 10^-5 cm^2/s
+Heat capacity 16.8268 J/mol K
+
+Arrivederci!
