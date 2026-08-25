@@ -1,0 +1,45 @@
+Doing density of states analysis based on trajectory.
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+T. A. Pascal and S. T. Lin and W. A. Goddard III
+Thermodynamics of liquids: standard molar entropies and heat capacities of
+common solvents from 2PT molecular dynamics
+Phys. Chem. Chem. Phys. 13 (2011) pp. 169-181
+-------- -------- --- Thank You --- -------- --------
+
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+C. Caleman and P. J. van Maaren and M. Hong and J. S. Hub and L. T. da Costa
+and D. van der Spoel
+Force Field Benchmark of Organic Liquids: Density, Enthalpy of Vaporization,
+Heat Capacities, Surface Tension, Isothermal Compressibility, Volumetric
+Expansion Coefficient, and Dielectric Constant
+J. Chem. Theo. Comp. 8 (2012) pp. 61
+-------- -------- --- Thank You --- -------- --------
+
+System = "Melamine 4-molecule H-bonded cluster"
+Nmol = 192
+Natom = 2880
+dt = 0.0005 ps
+tmass = 24215.6 amu
+V = 9.15424e+06 nm^3
+rho = 0.0043926 g/l
+T = 298.15 K
+beta = 0.403395 mol/kJ
+
+DoS parameters
+Delta = 0.0342153
+fluidicity = 0.105969
+hard sphere packing fraction = 5.45055
+hard sphere compressibility = 1.4267
+ideal gas entropy = 0.144605
+hard sphere entropy = 0.109581
+sigma_HS = 32.1038 nm
+DoS0 = 4400.92
+Dos2 = 2.02229e+15
+DoSTot = 17474.3
+Diffusion coefficient from VACF 37.5993 10^-5 cm^2/s
+Diffusion coefficient from DoS 37.5436 10^-5 cm^2/s
+Heat capacity -nan J/mol K
+
+Arrivederci!

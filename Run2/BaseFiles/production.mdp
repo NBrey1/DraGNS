@@ -1,0 +1,58 @@
+; Run parameters
+integrator      = md
+dt              = 0.0005      ; 0.5 fs 
+nsteps          = 1000000     ; 500 ps total 
+
+; Output control
+nstxout         = 0           ; Don't save full-precision coordinates
+nstvout         = 1           ; Save velocities EVERY step (required for DoS)
+nstfout         = 0           ; Don't save forces
+nstenergy       = 1000        ; Save energies every 0.5 ps
+nstlog          = 1000        ; Update log every 0.5 ps
+nstxout-compressed = 10000    ; Save compressed coords every 5 ps (for visualization)
+compressed-x-grps  = System
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 20
+rlist           = 1.0
+
+; Electrostatics - PME for periodic crystal
+coulombtype     = PME
+rcoulomb        = 1.0
+pme_order       = 4
+fourierspacing  = 0.12
+
+; Van der Waals
+vdwtype         = Cut-off
+rvdw            = 1.0
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = EnerPres
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.5         ; Looser coupling for production (less perturbation)
+ref_t           = 300
+
+; Pressure coupling 
+pcoupl          = Parrinello-Rahman
+pcoupltype      = semi-isotropic
+tau_p           = 5.0
+ref_p           = 1.0 1.0 1.0 0.0 0.0 0.0
+compressibility = 1.0e-5 1.0e-5 1.0e-5 0.0 0.0 0.0
+
+; Constraints - NONE (preserve all vibrational modes for DoS)
+constraints     = none
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Velocity generation
+gen_vel         = no          ; Continue from NPT
+continuation    = yes
+
+; Center of mass motion removal
+comm-mode       = Linear
+nstcomm         = 100

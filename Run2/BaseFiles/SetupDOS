@@ -1,0 +1,140 @@
+Setup guide to obtain the density of states (DOS) for Ice-Ih under Titan conditions:
+
+Create the .pdb file 
+
+Create the .top file
+
+## Step 1: Prepare directory structure
+- 'IceIh.pdb'
+- `IceIh.top` 
+- The four .mdp files:
+  - `minimization.mdp`
+  - `nvt.mdp`
+  - `npt.mdp`
+  - `production.mdp`
+#____________________________ STEP 1 __________________________________#
+  
+## Step 1:**OPTIONAL** since 'generate_ice.py' creates the box and hsa the desired # of molecules
+
+# Create larger box with proper dimensions
+gmx editconf -f methane.pdb -o box.gro -box 2.4 2.4 2.4
+
+# Add CH4 molecules with more insertion attempts
+gmx insert-molecules -f box.gro -ci methane.pdb -nmol 49 -o methane.gro
+
+#____________________________  STEP 2  ________________________________#
+
+## Step 2: Energy minimization
+# Create the run input file
+gmx grompp -f em.mdp -c Ice.pdb -p topol.top -o em.tpr
+
+# Run the minimization
+gmx mdrun -v -deffnm em
+
+#PLOT
+printf "Potential\n0\n" | gmx energy -f em.edr -o potential.xvg -xvg none
+
+# Print graph
+printf "Potential\n0\n" | gmx energy -f em.edr -o potential.xvg
+xmgrace potential.xvg
+
+#____________________________  STEP 3  ________________________________#
+
+## Step 3: NVT equilibration (temperature)
+# Create the NVT run input file
+gmx grompp -f nvt.mdp -c em.gro -p topol.top -o nvt.tpr
+
+# Run the NVT equilibration
+gmx mdrun -v -deffnm nvt
+
+# Analyze Temp run
+echo "Temperature" | gmx energy -f nvt.edr -o temperature.xvg -xvg none -b 20
+
+# Plot Temp data
+echo "Temperature" | gmx energy -f nvt.edr -o temperature.xvg -b 20
+xmgrace temperature.xvg
+
+#____________________________  STEP 4  ________________________________#
+## Step 4: NPT equilibration (pressure)
+# Create the NPT run input file
+gmx grompp -f npt1.mdp -c nvt.gro -p topol.top -o npt.tpr
+
+# Run the NPT equilibration
+gmx mdrun -v -deffnm npt1
+
+# Analyze Pressure Data
+echo "Pressure" | gmx energy -f npt.edr -o pressure.xvg -xvg none
+
+#Plot Preesssure
+echo "Pressure" | gmx energy -f npt.edr -o pressure.xvg
+xmgrace pressure.xvg
+
+#Check Density
+echo "Density" | gmx energy -f npt.edr -o density.xvg -xvg none
+echo "Density" | gmx energy -f npt.edr -o density.xvg
+xmgrace density.xvg
+
+
+STAGE 2 ** OPTIONAL**
+
+# Create the NPT run input file
+gmx grompp -f npt2.mdp -c nvt.gro -p topol.top -o npt.tpr
+
+# Run the NPT equilibration
+gmx mdrun -v -deffnm npt2
+
+#____________________________  STEP 5  ________________________________#
+## Step 5: Production run
+# Create the production run input file
+gmx grompp -f production.mdp -c npt.gro -p topol.top -o mdp.tpr
+
+# Run the production simulation
+gmx mdrun -v -deffnm md
+
+#____________________________  STEP 6  ________________________________#
+#Create index file
+#gmx make_ndx -f melamine_box.gro -o index.ndx
+
+# Preferably use:
+python3 IndexMelamine.py
+
+#This generates indices of atoms and bonds automatically
+__________________________________________________________________
+# Velocity autocorrelation function calculation (VAFC)
+
+# RING NITROGEN
+gmx velacc -f md.trr -s md.tpr -n index.ndx -o vacf_ring_N.xvg
+
+# RING CARBON
+gmx velacc -f md.trr -s md.tpr -n index.ndx -o vacf_ring_C.xvg
+
+# AMINE NITROGEN
+gmx velacc -f md.trr -s md.tpr -n index.ndx -o vacf_amine_N.xvg
+
+# AMINE HYDROGEN
+gmx velacc -f md.trr -s md.tpr -n index.ndx -o vacf_amine_H.xvg
+____________________________________________________________________
+# Fourier transform of VAFC to get DOS -> Run python script to fourier transform data in to DOS
+
+gmx dos -f md.trr -s md.tpr -n index.ndx
+
+
+
+
+
+
+
+
+
+#___________________________________________________________________________________________
+## Step 6: Calculate the density of states
+```bash
+# Calculate the DOS
+gmx dos -f md.trr -s md.tpr -dos dos.xvg
+
+OR
+
+gmx dos -f md.trr -s md.tpr -n index.ndx
+
+```
+
