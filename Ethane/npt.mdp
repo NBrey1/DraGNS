@@ -1,0 +1,48 @@
+; NPT Equilibration (Gas-to-Liquid Collapse)
+integrator      = md
+dt              = 0.001         ; 1 fs
+nsteps          = 1000000       ; 1 ns total to allow smooth density settling
+nstxout         = 5000          ; Save coordinates every 5 ps
+nstvout         = 5000          ; Save velocities every 5 ps
+nstenergy       = 1000          ; Save energies every 1 ps
+nstlog          = 1000          ; Update log file every 1 ps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 0.85
+
+; Electrostatics & VdW
+coulombtype     = PME
+rcoulomb        = 0.85
+rvdw            = 0.85
+pme_order       = 4
+fourierspacing  = 0.16
+DispCorr        = EnerPres
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1
+ref_t           = 94
+
+; Pressure coupling (The Compactor)
+pcoupl          = berendsen     ; Gentle shock absorber for initial collapse
+pcoupltype      = isotropic
+tau_p           = 5.0           ; Slow response time to prevent snapping
+ref_p           = 1.5           ; Titan pressure (bar)
+compressibility = 4.5e-5
+
+; Bonds (Armor)
+constraints     = all-bonds     ; CRITICAL: Protects bonds from exploding during volume collapse
+constraint_algorithm = lincs
+lincs_iter      = 1
+lincs_order     = 4
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Continuation
+continuation    = yes           ; Continue from NVT
+gen_vel         = no            ; Do not generate new velocities 

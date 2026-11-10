@@ -1,0 +1,61 @@
+; NPT equilibration for Melamine Crystal @ 300 K and 1.0 bar
+
+; Run parameters
+integrator      = md
+dt              = 0.001      ; 1 fs
+nsteps          = 5000000    ; 1 ns
+
+; Output control
+nstxout         = 5000       ; Save coordinates every 5 ps
+nstvout         = 5000       ; Save velocities every 5 ps
+nstenergy       = 500        ; Save energies every 0.5 ps
+nstlog          = 1000       ; Update log every 1 ps
+nstxout-compressed = 1000    ; Compressed trajectory every 1 ps
+compressed-x-grps  = System
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 1.0
+
+; Electrostatics - PME for periodic crystal
+coulombtype     = PME
+rcoulomb        = 1.0
+pme_order       = 4
+fourierspacing  = 0.12
+
+; Van der Waals
+vdwtype         = Cut-off
+rvdw            = 1.0
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = EnerPres      ; Valid for periodic crystal
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1
+ref_t           = 300
+
+; Pressure coupling
+pcoupl          = C-rescale
+pcoupltype      = semi-isotropic
+tau_p           = 25.0
+ref_p           = 1.0 1.0 1.0 0.0 0.0 0.0
+compressibility = 1.0e-5 1.0e-5 1.0e-5 0.0 0.0 0.0
+
+; Velocity generation
+gen_vel         = no
+
+; Constraints
+constraints     = none
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Center of mass motion removal
+comm-mode       = Linear
+nstcomm         = 100
+
+; Continuation from NVT
+continuation    = yes

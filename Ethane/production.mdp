@@ -1,0 +1,40 @@
+; Production MD for Ethane Density of States
+integrator      = md
+dt              = 0.001         ; 1 fs (Small enough for flexible C-H bonds)
+nsteps          = 50000         ; 50 ps total (Plenty of time for VDOS)
+nstxout         = 0             ; Don't save coordinates (saves hard drive space)
+nstvout         = 1             ; Save velocities EVERY step (Crucial for VDOS)
+nstenergy       = 500           ; Save energies every 0.5 ps
+nstlog          = 500           ; Update log file every 0.5 ps
+
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 0.85
+rcoulomb        = 0.85
+rvdw            = 0.85
+
+coulombtype     = PME
+pme_order       = 4
+fourierspacing  = 0.16
+DispCorr        = EnerPres
+
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1
+ref_t           = 94
+
+pcoupl          = C-rescale     ; Switch to accurate production barostat
+pcoupltype      = isotropic
+tau_p           = 5.0
+ref_p           = 1.5           ; Titan pressure
+compressibility = 4.5e-5
+
+constraints     = none          ; CRITICAL: Must be none so molecules can vibrate
+constraint_algorithm = lincs
+lincs_iter      = 1
+lincs_order     = 4
+
+pbc             = xyz
+continuation    = yes           ; Continue smoothly from NPT
+gen_vel         = no

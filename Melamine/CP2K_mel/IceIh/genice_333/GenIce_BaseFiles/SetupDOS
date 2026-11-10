@@ -1,0 +1,250 @@
+Setup guide to obtain the density of states (DOS) for Ice-Ih under Titan conditions:
+
+Create the .pdb file 
+
+Create the .top file
+
+## Step 1: Prepare directory structure
+- 'IceIh.pdb'
+- `IceIh.top` 
+- The four .mdp files:
+  - `minimization.mdp`
+  - `nvt.mdp`
+  - `npt.mdp`
+  - `production.mdp`
+#____________________________ STEP 1 __________________________________#
+  
+## Step 1:**OPTIONAL** since 'generate_ice.py' creates the box and hsa the desired # of molecules
+
+# Create larger box with proper dimensions
+gmx editconf -f methane.pdb -o box.gro -box 2.4 2.4 2.4
+
+# Add CH4 molecules with more insertion attempts
+gmx insert-molecules -f box.gro -ci methane.pdb -nmol 49 -o methane.gro
+
+#____________________________  STEP 2  ________________________________#
+
+## Step 2: Energy minimization
+# Create the run input file
+gmx grompp -f em.mdp -c Ice.pdb -p topol.top -o em.tpr
+
+# Run the minimization
+gmx mdrun -v -deffnm em
+
+#PLOT
+printf "Potential\n0\n" | gmx energy -f em.edr -o potential.xvg -xvg none
+
+# Print graph
+printf "Potential\n0\n" | gmx energy -f em.edr -o potential.xvg
+xmgrace potential.xvg
+
+#____________________________  STEP 3  ________________________________#
+
+## Step 3: NVT equilibration (temperature)
+# Create the NVT run input file
+gmx grompp -f nvt.mdp -c em.gro -p topol.top -o nvt.tpr
+
+# Run the NVT equilibration
+gmx mdrun -v -deffnm nvt
+
+# Analyze Temp run
+echo "Temperature" | gmx energy -f nvt.edr -o temperature.xvg -xvg none -b 20
+
+# Plot Temp data
+echo "Temperature" | gmx energy -f nvt.edr -o temperature.xvg -b 20
+xmgrace temperature.xvg
+
+#____________________________  STEP 4  ________________________________#
+## Step 4: NPT equilibration (pressure)
+# Create the NPT run input file
+gmx grompp -f npt1.mdp -c nvt.gro -p topol.top -o npt.tpr
+
+# Run the NPT equilibration
+gmx mdrun -v -deffnm npt1
+
+# Analyze Pressure Data
+echo "Pressure" | gmx energy -f npt.edr -o pressure.xvg -xvg none
+
+#Plot Preesssure
+echo "Pressure" | gmx energy -f npt.edr -o pressure.xvg
+xmgrace pressure.xvg
+
+#Check Density
+echo "Density" | gmx energy -f npt.edr -o density.xvg -xvg none
+echo "Density" | gmx energy -f npt.edr -o density.xvg
+xmgrace density.xvg
+
+
+STAGE 2 ** OPTIONAL**
+
+# Create the NPT run input file
+gmx grompp -f npt2.mdp -c nvt.gro -p topol.top -o npt.tpr
+
+# Run the NPT equilibration
+gmx mdrun -v -deffnm npt2
+
+#____________________________  STEP 5  ________________________________#
+## Step 5: Production run
+# Create the production run input file
+gmx grompp -f production.mdp -c npt.gro -p topol.top -o mdp.tpr
+
+# Run the production simulation
+gmx mdrun -v -deffnm md
+
+#____________________________  STEP 6  ________________________________#
+#Create index file
+#gmx make_ndx -f Ice.pdb -o index.ndx
+
+# Preferably use:
+python3 Ice_bonds.py
+
+#This generates indices of atoms and bonds automatically
+__________________________________________________________________
+# Velocity autocorrelation function calculation (VAFC)
+gmx velacc -f md.trr -s md.tpr -n Ice_bonds.ndx -o vacf.xvg
+
+#For Carbon
+gmx velacc -f md.trr -s md.tpr -n ice_bonds.ndx -o vacf_O.xvg
+gmx dos -f md.trr -s md.tpr -n index.ndx -dos vacf_O.xvg
+
+#For Hydrogen + Virtual site (if needed)
+gmx velacc -f md.trr -s md.tpr -o vacf_H1.xvg
+gmx velacc -f md.trr -s md.tpr -o vacf_H2.xvg
+gmx velacc -f md.trr -s md.tpr -o vacf_MW.xvg
+
+
+#For Bonds
+gmx velacc -f md.trr -s md.tpr -o vacf_OH1.xvg
+gmx velacc -f md.trr -s md.tpr -o vacf_OH2.xvg
+
+#gmx velacc -f md.trr -s md.tpr -o vacf_CH3.xvg
+#gmx velacc -f md.trr -s md.tpr -o vacf_CH4.xvg
+____________________________________________________________________
+# Fourier transform of VAFC to get DOS -> Run python script to fourier transform data in to DOS
+
+gmx dos -f md.trr -s md.tpr -n ice_bonds.ndx
+
+python3 ICE_DOS.py  -OR- python3 DOS.py
+
+
+#Plot output in cm^-1, eV, neutron wavelength
+python3 convert_dos.py methanevacf_system.xvg methane_dos_sys
+
+python3 convert_dos.py ammoniavacf_N.xvg ammonia_dos_N
+
+python3 convert_dos.py ammoniavacf_H.xvg ammonia_dos_H
+
+
+
+
+
+
+
+#___________________________________________________________________________________________
+## Step 6: Calculate the density of states
+```bash
+# Calculate the DOS
+gmx dos -f md.trr -s md.tpr -dos SystemDOS.xvg
+
+OR
+
+gmx dos -f md.trr -s md.tpr -n ice_bonds.ndx
+
+```
+When prompted, select the group for which you want to calculate the DOS (typically "System")
+gmx dos -f md.trr -s md.tpr
+
+
+
+
+## Step 7: Analyze the results
+You can visualize the DOS using plotting software like Grace, XMGRACE, or matplotlib:
+```bash
+# Using xmgrace (if installed)
+xmgrace dos.xvg
+
+OR
+python3 methaneDOS.py
+```
+#Quantum Corrected DOS
+gmx dos -f methproduction.trr -s methproduction.tpr -do methaneqdos.xvg -qcorr
+
+#Mass weighted DOS
+gmx dos -f production.trr -s production.tpr -do mdos.xvg -mw
+
+#  Index specific bonds
+# For the first methane molecule (atoms 1-5):
+> a 1 | a 2
+> name 6 CH1_bond1
+
+> a 1 | a 3  
+> name 7 CH2_bond1
+
+> a 1 | a 4
+> name 8 CH3_bond1
+
+> a 1 | a 5
+> name 9 CH4_bond1
+
+# For all C-H1 bonds across all molecules (every 5th atom starting from 1 and 2):
+> a 1-500:5 | a 2-501:5
+> name 10 all_CH1_bonds
+
+> a 1-500:5 | a 3-502:5  
+> name 11 all_CH2_bonds
+
+> a 1-500:5 | a 4-503:5
+> name 12 all_CH3_bonds
+
+> a 1-500:5 | a 5-504:5
+> name 13 all_CH4_bonds
+
+> q
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Additional analysis tips:
+
+1. **Verify equilibration**:
+   ```bash
+   # Check energy stability during NPT
+   gmx energy -f npt.edr -o energy.xvg
+   # Select potential energy, temperature, pressure, and density when prompted
+   ```
+
+2. **Check system density**:
+   ```bash
+   gmx energy -f production.edr -o density.xvg
+   # Select density when prompted
+   ```
+   The density should be approximately 0.42-0.45 g/cm³ for methane under Titan conditions.
+
+3. **Different DOS analyses**:
+   You can calculate different types of DOS with additional flags:
+   ```bash
+   # For the quantum DOS (corrected for quantum effects)
+   gmx dos -f production.trr -s production.tpr -o qdos.xvg -dos -qcorr
+   
+   # For mass-weighted DOS
+   gmx dos -f production.trr -s production.tpr -o mdos.xvg -dos -mw
+   ```
+
+4. **Calculate vibrational spectrum**:
+   ```bash
+   # Calculate the vibrational spectrum from velocity autocorrelation
+   gmx velacc -f production.trr -s production.tpr -o vac.xvg -tv tav.xvg -f
+   ```
+

@@ -1,0 +1,53 @@
+; Topology file for Ice Ih 5x5x3 Supercell
+; TIP4P/Ice water model 
+; Reference: Abascal et al., J. Chem. Phys. 122, 234511 (2005)
+; 300 water molecules (4 molecules x 5x5x3 replication)
+
+[ defaults ]
+; nbfunc    comb-rule   gen-pairs   fudgeLJ fudgeQQ
+1           2           yes         0.5     0.5
+
+[ atomtypes ]
+; name  at.num   mass      charge  ptype    sigma      epsilon
+OW_tip4pice  8   15.9994   0.0000  A        0.31668    0.882
+HW_tip4pice  1   1.0080    0.0000  A        0.00000    0.00000
+MW           0   0.0000    0.0000  D        0.00000    0.00000
+
+[ moleculetype ]
+; molname   nrexcl
+SOL         2
+
+[ atoms ]
+; nr    type         resnr   residu  atom    cgnr    charge      mass
+1       OW_tip4pice  1       SOL     OW       1        0.0000     15.9994
+2       HW_tip4pice  1       SOL     HW1      1        0.5897      1.0080
+3       HW_tip4pice  1       SOL     HW2      1        0.5897      1.0080
+4       MW           1       SOL     MW       1       -1.1794      0.0000
+
+[ bonds ]
+; i     j       funct   length  force_constant
+1       2       1       0.09572 502416.0    ; O-H (0.9572 Å)
+1       3       1       0.09572 502416.0    ; O-H (0.9572 Å)
+
+[ angles ]
+; i     j       k       funct   angle   force_constant
+2       1       3       1       104.52  628.02      ; H-O-H (104.52°)
+
+[ virtual_sites3 ]
+; site  from                    funct   a           b
+4       1       2       3       1       0.13458     0.13458
+
+[ exclusions ]
+; i     j
+1       2       3       4
+2       1       3       4
+3       1       2       4
+4       1       2       3
+
+[ system ]
+; Name
+Ice Ih 3x3x2 Supercell - TIP4P/Ice
+
+[ molecules ]
+; Compound        #mols
+SOL               432

@@ -1,0 +1,9 @@
+C C C-C.skf
+C H C-H.skf
+C N C-N.skf
+H C H-C.skf
+H H H-H.skf
+H N H-N.skf
+N C N-C.skf
+N H N-H.skf
+N N N-N.skf

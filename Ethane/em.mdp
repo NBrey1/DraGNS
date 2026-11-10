@@ -1,0 +1,20 @@
+; Energy Minimization for Ethane Gas Box
+integrator      = steep         ; Steepest descent energy minimization
+emtol           = 1000.0        ; Stop minimization when maximum force < 1000.0 kJ/mol/nm
+emstep          = 0.01          ; Minimization step size
+nsteps          = 50000         ; Maximum number of minimization steps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+nstlist         = 10            ; Frequency to update the neighbor list
+rlist           = 0.85          ; Cut-off distance for the short-range neighbor list
+
+; Electrostatics & VdW
+coulombtype     = PME           ; Treatment of long-range electrostatic interactions
+rcoulomb        = 0.85          ; Short-range electrostatic cut-off
+rvdw            = 0.85          ; Short-range Van der Waals cut-off
+pme_order       = 4
+fourierspacing  = 0.16
+
+; Periodic boundary conditions
+pbc             = xyz           ; Periodic Boundary Conditions in all 3 dimensions

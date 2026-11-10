@@ -16,3 +16,7 @@
 
 # Keep small .xvg files (like energy, temperature) by not blanket-ignoring all .xvg
 # The patterns above target the specific large ones
+*.trr
+*.tpr
+*.edr
+*.cpt

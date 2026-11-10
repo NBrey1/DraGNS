@@ -1,0 +1,57 @@
+; NPT simulation for Melamine @ 300 K and 1.0 bar
+
+; Run parameters
+integrator      = md
+dt              = 0.001      ; 1 fs
+nsteps          = 1000000    ; 1000 ps/ 1 ns
+
+; Output control
+nstxout         = 5000       ; Save coordinates every 5 ps
+nstvout         = 5000       ; Save velocities every 5 ps
+nstenergy       = 500        ; Save energies every 0.5 ps
+nstlog          = 1000       ; Update log every 1 ps
+nstxout-compressed = 1000    ; Compressed trajectory every 1 ps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 1.0
+
+; Electrostatics
+coulombtype     = Cut-off
+rcoulomb        = 1.0     
+
+; Van der Waals
+rvdw            = 1.0
+vdw-modifier    = Potential-shift-Verlet
+DispCorr        = no
+
+; Temperature coupling
+tcoupl          = V-rescale
+tc-grps         = System
+tau_t           = 0.1                   ; Fast coupling for equilibration
+ref_t           = 300                    ; Titan temperature
+
+; Pressure coupling 
+pcoupl          = Berendsen             ; Gentle for equilibration
+pcoupltype      = isotropic              
+tau_p           = 10.0                    
+ref_p           = 1.0                   ; Titan surface pressure (bar)
+compressibility = 1.0e-5                ; 3D hydrogen bond network: compressibility (1/bar) (assuming Bulk Modulus ~10-15 GPa)
+
+; Velocity generation
+gen_vel         = no                    ; Continue from NVT
+
+; Constraints
+constraints     = none            ; Constrain bonds for stability
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Center of mass motion removal
+comm-mode       = Linear
+nstcomm         = 100
+
+; Continuation from NVT
+continuation    = yes

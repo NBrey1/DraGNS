@@ -1,0 +1,42 @@
+; NVT Equilibration for Ethane Gas Box
+integrator      = md            ; Molecular dynamics integrator
+dt              = 0.001         ; 1 fs timestep (required for unconstrained bonds)
+nsteps          = 100000        ; 100 ps total 
+nstxout         = 1000          ; Save coordinates every 1.0 ps
+nstvout         = 1000          ; Save velocities every 1.0 ps
+nstenergy       = 1000          ; Save energies every 1.0 ps
+nstlog          = 1000          ; Update log file every 1.0 ps
+
+; Neighbor searching
+cutoff-scheme   = Verlet
+ns_type         = grid
+nstlist         = 10
+rlist           = 0.85
+
+; Electrostatics & VdW
+coulombtype     = PME
+rcoulomb        = 0.85
+rvdw            = 0.85
+pme_order       = 4
+fourierspacing  = 0.16
+DispCorr        = EnerPres      ; Apply analytical dispersion corrections
+
+; Temperature coupling
+tcoupl          = V-rescale     ; Modified Berendsen thermostat
+tc-grps         = System        ; Couple entire system as one group
+tau_t           = 0.1           ; Time constant (ps)
+ref_t           = 94            ; Titan temperature (K)
+
+; Pressure coupling
+pcoupl          = no            ; No pressure coupling in NVT
+
+; Periodic boundary conditions
+pbc             = xyz
+
+; Velocity generation
+gen_vel         = yes           ; Generate velocities
+gen_temp        = 94            ; at Titan temperature
+gen_seed        = -1            ; Random seed
+
+; Bonds
+constraints     = none          ; Flexible bonds
