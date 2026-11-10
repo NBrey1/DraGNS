@@ -1,0 +1,49 @@
+; Solid ammonia (phase I, P2_13) - flexible NH3 based on OPLS-AA nonbonded parameters
+; Changes from previous version:
+;   - sigma(N) 0.3150 -> 0.3420 nm (OPLS-AA opls_127 value)
+;   - N-H b0   0.1133 -> 0.1012 nm (experimental N-H length)
+;   - [defaults] set to OPLS convention (comb-rule 3, fudge 0.5/0.5);
+;     no energy change for this system since all intramolecular pairs are excluded
+
+[ defaults ]
+; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
+1               3               yes             0.5     0.5
+
+[ atomtypes ]
+; name      mass      charge  ptype  sigma(nm)   epsilon(kJ/mol)
+N_nh3    14.0067     -1.02     A       0.3420      0.71128
+H_nh3     1.0079      0.34     A       0.0000      0.00000
+
+[ moleculetype ]
+; Name            nrexcl
+NH3               3
+
+[ atoms ]
+; nr   type   resnr residue  atom  cgnr   charge     mass
+1      N_nh3  1     NH3      N     1     -1.02     14.0067
+2      H_nh3  1     NH3      H1    1      0.34      1.0079
+3      H_nh3  1     NH3      H2    1      0.34      1.0079
+4      H_nh3  1     NH3      H3    1      0.34      1.0079
+
+[ bonds ]
+; i     j       func    b0(nm)       kb(kJ/mol/nm^2)
+; kb consistent with ~3360 cm-1 N-H stretch (harmonic, reduced-mass estimate)
+1       2       1       0.10120      3.77E+05
+1       3       1       0.10120      3.77E+05
+1       4       1       0.10120      3.77E+05
+
+[ angles ]
+; i     j       k       func    theta0(deg)   ka(kJ/mol/rad^2)
+; ka STILL UNVALIDATED - fit to solid NH3 bend frequencies
+; (nu2 umbrella ~1060 cm-1, nu4 ~1650 cm-1) before trusting DOS in that range
+2       1       3       1       107.30        350.00
+2       1       4       1       107.30        350.00
+3       1       4       1       107.30        350.00
+
+[ system ]
+Solid ammonia ice (P2_13 cubic, Z=4) - Titan conditions 94 K, 1.5 atm
+
+[ molecules ]
+; Compound       #mols
+; 500 = 4 molecules/cell x 5x5x5 cells (gmx genconf -nbox 5 5 5)
+NH3              500
